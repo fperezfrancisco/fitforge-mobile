@@ -1,11 +1,12 @@
 import { Colors } from "@/constants/Colors";
+import { AuthContext } from "@/context/AuthContext";
 import Entypo from "@expo/vector-icons/Entypo";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Checkbox } from "expo-checkbox";
-import { Link, useRouter } from "expo-router";
+import { Link, router, useRouter } from "expo-router";
 
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   ScrollView,
   Text,
@@ -15,6 +16,11 @@ import {
   View,
 } from "react-native";
 
+export const isValidEmail = (email: string): boolean => {
+  const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+  return emailRegex.test(email);
+};
+
 const LoginForm = () => {
   const colorScheme = useColorScheme() ?? "dark";
   //console.log(colorScheme);
@@ -22,14 +28,58 @@ const LoginForm = () => {
   //console.log(Colors[colorScheme]);
   const [rememberMe, setRememberMe] = useState(false);
   const [email, setEmail] = useState("");
+  const [emailMissing, setEmailMissing] = useState(false);
   const [password, setPassword] = useState("");
+  const [passwordMissing, setPasswordMissing] = useState(false);
+  const { login, loading } = useContext(AuthContext)!;
 
   const router = useRouter();
 
-  const handleSubmit = () => {
-    // Handle form submission logic here
-    router.push("/(tabs)/workouts");
+  const handleSubmit = async () => {
+    setEmailMissing(false);
+    setPasswordMissing(false);
+    // validate inputs
+    // ensure email and password
+    if (!email) {
+      setEmailMissing(true);
+      return alert("Please enter your email");
+    }
+
+    if (!isValidEmail(email)) {
+      setEmailMissing(true);
+      return alert("Please enter a valid email");
+    }
+    if (!password) {
+      setPasswordMissing(true);
+      return alert("Please enter your password");
+    }
+
+    try {
+      const success = await login(email, password);
+      console.log(success);
+      if (success) {
+        return router.push("/(tabs)/workouts");
+      }
+    } catch (error: any) {
+      console.log(error);
+      return alert(error.message || "An error occurred during login");
+    }
   };
+
+  if (loading) {
+    return (
+      <View className="w-full flex flex-col items-center mt-8">
+        <Text
+          style={{
+            color: colorScheme === "light" ? "black" : "white",
+          }}
+          className="text-xl font-medium"
+        >
+          Loading...
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <View className="w-full flex flex-col items-center mt-8">
@@ -51,7 +101,7 @@ const LoginForm = () => {
             color: colorScheme === "light" ? "black" : "white",
             backgroundColor: "transparent",
           }}
-          className="w-full px-4 pl-14 py-3 rounded-2xl border border-neutral-200 mb-4 text-base h-16 relative flex flex-row gap-4"
+          className={`w-full px-4 pl-14 py-3 rounded-2xl border ${emailMissing ? "border-red-500" : "border-neutral-200"} mb-4 text-base h-16 relative flex flex-row gap-4`}
         />
       </View>
       <View className="w-full h-16 mb-4 flex flex-row items-center relative">
@@ -72,7 +122,7 @@ const LoginForm = () => {
             color: colorScheme === "light" ? "black" : "white",
             backgroundColor: "transparent",
           }}
-          className="w-full px-4 pl-14 py-3 rounded-2xl border border-neutral-200 mb-4 text-base h-16 relative flex flex-row gap-4"
+          className={`w-full px-4 pl-14 py-3 rounded-2xl border ${passwordMissing ? "border-red-500" : "border-neutral-200"} mb-4 text-base h-16 relative flex flex-row gap-4`}
         />
       </View>
       <View className="w-full mb-8 flex flex-row items-center justify-between">
@@ -250,8 +300,17 @@ export default function Index() {
   //console.log(colorScheme);
   const theme = Colors[colorScheme] ?? Colors.light;
   //console.log(Colors[colorScheme]);
+  const { isAuthenticated } = useContext(AuthContext)!;
 
   const [isLogin, setIsLogin] = useState(true);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      // Navigate to the home screen
+      console.log("User is authenticated, navigating to workouts");
+      router.replace("/(tabs)/workouts");
+    }
+  }, []);
 
   return (
     <View

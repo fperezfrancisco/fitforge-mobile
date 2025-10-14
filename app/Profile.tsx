@@ -1,6 +1,7 @@
 import { Colors } from "@/constants/Colors";
+import { AuthContext } from "@/context/AuthContext";
 import { Stack } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Appearance,
   ScrollView,
@@ -12,6 +13,7 @@ import {
 
 const Profile = () => {
   const colorScheme = useColorScheme() ?? "dark";
+  const { user } = useContext(AuthContext)!;
 
   //console.log(colorScheme);
   //const theme = Colors[colorScheme] ?? Colors.light;
@@ -63,13 +65,13 @@ const Profile = () => {
           <View className="size-[140px] bg-lime-600 rounded-full"></View>
           <View className="w-full flex flex-col items-center text-center px-4">
             <Text style={{ color: theme.text }} className="font-bold text-xl">
-              Francisco Perez
+              {user?.name}
             </Text>
             <Text
               style={{ color: theme.text }}
               className="font-medium text-base truncate"
             >
-              fperezfrancisco4@gmail.com
+              {user?.email}
             </Text>
             <View className="mt-8 flex flex-row gap-4">
               <TouchableOpacity className="px-4 py-2 border border-neutral-200 rounded-2xl w-full h-[48px] flex items-center justify-center">
