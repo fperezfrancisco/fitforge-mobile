@@ -3,7 +3,7 @@ import Entypo from "@expo/vector-icons/Entypo";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Checkbox } from "expo-checkbox";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 
 import { useState } from "react";
 import {
@@ -23,6 +23,13 @@ const LoginForm = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const router = useRouter();
+
+  const handleSubmit = () => {
+    // Handle form submission logic here
+    router.push("/(tabs)/workouts");
+  };
 
   return (
     <View className="w-full flex flex-col items-center mt-8">
@@ -96,7 +103,10 @@ const LoginForm = () => {
         </Link>
       </View>
       <View className="w-full flex flex-row items-center">
-        <TouchableOpacity className="w-full bg-lime-600 h-[80px] rounded-full py-4 items-center justify-center">
+        <TouchableOpacity
+          onPress={handleSubmit}
+          className="w-full bg-lime-600 h-[80px] rounded-full py-4 items-center justify-center"
+        >
           <Text className="text-white font-bold text-2xl">Login</Text>
         </TouchableOpacity>
       </View>
@@ -112,6 +122,13 @@ const SignUpForm = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
+
+  const router = useRouter();
+
+  const handleSubmit = () => {
+    // Handle form submission logic here
+    router.push("/(tabs)/workouts");
+  };
   return (
     <View className="w-full flex flex-col items-center mt-8">
       <View className="w-full h-16 mb-4 flex flex-row items-center relative">
@@ -217,7 +234,10 @@ const SignUpForm = () => {
         </View>
       </View>
       <View className="w-full flex flex-row items-center">
-        <TouchableOpacity className="w-full bg-lime-600 h-[80px] rounded-full py-4 items-center justify-center">
+        <TouchableOpacity
+          onPress={handleSubmit}
+          className="w-full bg-lime-600 h-[80px] rounded-full py-4 items-center justify-center"
+        >
           <Text className="text-white font-bold text-2xl">Sign up</Text>
         </TouchableOpacity>
       </View>
