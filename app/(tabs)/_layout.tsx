@@ -1,7 +1,8 @@
+import WorkoutPlayer from "@/components/WorkoutPlayer";
 import { Colors } from "@/constants/Colors";
 
 import { Tabs } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import { Image, Text, useColorScheme, View } from "react-native";
 
 const TabIcon = ({ title, icon, focused }: any) => {
@@ -19,8 +20,13 @@ const Layout = () => {
   const colorScheme = useColorScheme() ?? "dark";
   //console.log(colorScheme);
   const theme = Colors[colorScheme] ?? Colors.light;
+  const [isPlayerVisible, setIsPlayerVisible] = useState(true);
   return (
     <>
+      <WorkoutPlayer
+        isVisible={isPlayerVisible}
+        onClose={() => setIsPlayerVisible(false)}
+      />
       <Tabs
         screenOptions={{
           tabBarShowLabel: false,
