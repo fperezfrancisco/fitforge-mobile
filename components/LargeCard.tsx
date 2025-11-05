@@ -49,7 +49,7 @@ const LargeCard = ({ workout }: LargeCardProps) => {
 
   return (
     <TouchableOpacity
-      onPress={() => router.push("/workoutPreview/1")}
+      onPress={() => router.push(`/workoutPreview/${workout.id}`)}
       className="aspect-[3/2] h-full min-h-[160px] w-auto border border-neutral-200 rounded-2xl bg-neutral-400 relative overflow-hidden"
     >
       <Image
