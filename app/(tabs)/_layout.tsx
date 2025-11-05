@@ -20,7 +20,7 @@ const Layout = () => {
   const colorScheme = useColorScheme() ?? "dark";
   //console.log(colorScheme);
   const theme = Colors[colorScheme] ?? Colors.light;
-  const [isPlayerVisible, setIsPlayerVisible] = useState(true);
+  const [isPlayerVisible, setIsPlayerVisible] = useState(false);
   return (
     <>
       <WorkoutPlayer

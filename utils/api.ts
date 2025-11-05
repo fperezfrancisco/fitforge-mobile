@@ -8,7 +8,7 @@ const BASE = isDev
   ? Constants.expoConfig?.extra?.API_URL_LOCAL
   : Constants.expoConfig?.extra?.API_URL_PROD;
 
-console.log("API Base URL:", BASE);
+//console.log("API Base URL:", BASE);
 
 if (!BASE) {
   console.error(
@@ -25,12 +25,13 @@ const apiClient = axios.create({
 // Add Authorization header with accessToken for non-auth routes
 apiClient.interceptors.request.use(async (config) => {
   const isAuthPath = config.url?.startsWith("/auth/");
+  /*
   console.log(
     "Request URL:",
     config.baseURL ? config.baseURL + config.url : config.url
-  );
-  console.log("Request Headers:", config.headers);
-  console.log("Request Data:", config.data);
+  );*/
+  //console.log("Request Headers:", config.headers);
+  //console.log("Request Data:", config.data);
   if (!isAuthPath) {
     const accessToken = await SecureStore.getItemAsync("accessToken");
     if (accessToken) {

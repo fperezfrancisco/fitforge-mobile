@@ -310,7 +310,7 @@ export default function Index() {
       console.log("User is authenticated, navigating to workouts");
       router.replace("/(tabs)/workouts");
     }
-  }, []);
+  }, [isAuthenticated]);
 
   return (
     <View

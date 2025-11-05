@@ -1,11 +1,10 @@
+import { User } from "@/types/auth";
 import * as SecureStore from "expo-secure-store";
 import React, { createContext, useEffect, useState } from "react";
 import { AuthAPI } from "../utils/api";
 
-type User = { id: string; name?: string; email: string } | null;
-
 type AuthCtx = {
-  user: User;
+  user: User | null;
   loading: boolean;
   login: (email: string, password: string) => void | Promise<boolean>;
   register: (
@@ -24,7 +23,7 @@ type AuthCtx = {
 export const AuthContext = createContext<AuthCtx | null>(null);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);

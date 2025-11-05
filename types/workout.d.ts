@@ -1,4 +1,4 @@
-export interface WorkoutApiType {
+export interface WorkoutType {
   name: string;
   tags: string[];
   image?: string;
@@ -11,7 +11,31 @@ export interface WorkoutApiType {
   blocks: [
     {
       title: string;
-      items: WorkoutItem[];
+      items: WorkoutBlockItem[];
     },
   ];
+}
+
+export interface WorkoutBlockItem {
+  name: string;
+  exerciseId: string;
+  sets: number;
+  reps: string;
+  restSecs: number;
+}
+
+export interface ExerciseType {
+  author: string;
+  description: string;
+  details: {
+    sets: number;
+    reps: string;
+    restSecs: number;
+    equipment: string[];
+  };
+  id: string;
+  image: string;
+  tags: string[];
+  title: string;
+  type: string;
 }
