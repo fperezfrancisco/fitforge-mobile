@@ -1,7 +1,7 @@
 import { Colors } from "@/constants/Colors";
 import { WorkoutBlockItem, WorkoutType } from "@/types/workout";
 import { http } from "@/utils/api";
-import { Link, Stack, useLocalSearchParams } from "expo-router";
+import { Link, router, Stack, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
   Image,
@@ -32,7 +32,10 @@ const Tags = ({ tag }: { tag: string }) => {
 const WorkoutPreviewLi = ({ exercise }: { exercise: WorkoutBlockItem }) => {
   const colorScheme = useColorScheme() ?? "dark";
   return (
-    <TouchableOpacity className="w-full rounded-2xl border border-neutral-200 p-2 px-4 bg-black/50 flex items-center h-[72px] justify-between flex-row">
+    <TouchableOpacity
+      onPress={() => router.push(`/exercisePreview/${exercise.exerciseId}`)}
+      className="w-full rounded-2xl border border-neutral-200 p-2 px-4 bg-black/50 flex items-center h-[72px] justify-between flex-row"
+    >
       <View className="flex flex-row items-center gap-4">
         <View className="flex flex-col items-start">
           <Text
@@ -108,7 +111,7 @@ const WorkoutPreview = () => {
   const fetchCurrWorkoutData = async (id: string) => {
     // Implementation to fetch workout data by id
     const res = await http.get(`/workouts/${id}`);
-    console.log("This workout data response: ", res);
+    //console.log("This workout data response: ", res);
     setWorkoutData(res);
     //setWorkoutBlocksData(flatItems);
   };
@@ -117,13 +120,16 @@ const WorkoutPreview = () => {
     if (id) {
       fetchCurrWorkoutData(id as string);
     }
+  }, [id]);
+
+  useEffect(() => {
     if (workoutData) {
       const flatItems = (workoutData.blocks ?? []).flatMap(
         (b: any) => b.items ?? []
       );
       setWorkoutBlocksData(flatItems);
     }
-  }, [id, workoutData]);
+  }, [workoutData]);
 
   return (
     <>

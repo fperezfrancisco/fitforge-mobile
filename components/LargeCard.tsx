@@ -23,7 +23,7 @@ interface LargeCardProps {
 }
 
 const LargeCard = ({ workout }: LargeCardProps) => {
-  console.log("Large card");
+  //console.log("Large card");
   const getImageSource = () => {
     if (!workout.image) {
       return require("../assets/images/browse/running-default.webp");
